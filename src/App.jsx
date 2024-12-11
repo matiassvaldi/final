@@ -1,38 +1,71 @@
-
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import Barra from './componentes/Barra';
+import Paises from './componentes/Paises';
+import Historial from './componentes/Historial';
+import './App.css'; 
 
 const App = () => {
-  const [pais, setPais] = useState('');
+  const [terminoBusqueda, setTerminoBusqueda] = useState('');
+  const [paises, setPaises] = useState([]);
   const [historial, setHistorial] = useState([]);
+  const [error, setError] = useState(null);
 
-  const handleSearch = () => {
-    if (pais && !historial.includes(pais)) {
-      setHistorial(prevHistorial => [pais, ...prevHistorial].slice(0, 5)); // Limita el historial a 5 países
+  useEffect(() => {
+    if (terminoBusqueda.trim() === '') {
+      setPaises([]);
+      return;
     }
-    setPais('');
+
+    const fetchPaises = async () => {
+      try {
+        const response = await fetch(`https://restcountries.com/v3.1/name/${terminoBusqueda}`);
+        if (!response.ok) throw new Error('No se encontraron resultados');
+        const data = await response.json();
+        setPaises(data);
+        setError(null);
+      } catch (err) {
+        setPaises([]);
+        setError(err.message);
+      }
+    };
+
+    fetchPaises();
+  }, [terminoBusqueda]);
+
+  const agregarAlHistorial = () => {
+    if (terminoBusqueda.trim() === '') return;
+
+    const nuevoPais = paises[0]?.name.common; 
+
+    
+    if (nuevoPais && !historial.includes(nuevoPais)) {
+      setHistorial((prevHistorial) => {
+        const actualizado = [nuevoPais, ...prevHistorial];
+        return actualizado.slice(0, 5);  
+      });
+    }
   };
 
   return (
-    <div className="App">
+    <div className="app">
+      <h1>Buscador de Países</h1>
+
+      
       <div className="barra-container">
-        <input
-          type="text"
-          value={pais}
-          onChange={(e) => setPais(e.target.value)}
-          placeholder="Buscar país..."
-        />
-        <button onClick={handleSearch}>Buscar</button>
+        <Barra terminoBusqueda={terminoBusqueda} setTerminoBusqueda={setTerminoBusqueda} />
+        <button onClick={agregarAlHistorial} className="boton-historial">
+          Guardar en Historial
+        </button>
       </div>
 
-      <div className="historial-container">
-        <h3>Historial de Búsquedas</h3>
-        <ul>
-          {historial.map((pais, index) => (
-            <li key={index}>{pais}</li>
-          ))}
-        </ul>
-      </div>
+      
+      {error && <p className="error">{error}</p>}
+
+      
+      {terminoBusqueda.trim() && <Paises paises={paises} />}
+
+      
+      <Historial historial={historial} />
     </div>
   );
 };
