@@ -1,0 +1,53 @@
+
+
+.app {
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2em;
+  color: #333;
+}
+
+.barra-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.boton-historial {
+  margin-left: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.error {
+  color: red;
+}
+
+h3 {
+  color: #333;
+  font-size: 1.5em;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+input {
+  padding: 10px;
+  width: 300px;
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid #4CAF50;
+}
