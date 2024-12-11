@@ -2,13 +2,19 @@ import React from 'react';
 
 const Historial = ({ historial }) => {
   return (
-    <div>
+    <div className="historial-container">
       <h3>Historial de Búsquedas</h3>
-      <ul>
-        {historial.map((pais, index) => (
-          <li key={index}>{pais}</li>
-        ))}
-      </ul>
+      {historial.length === 0 ? (
+        <p>No hay países en el historial.</p>
+      ) : (
+        <div className="historial-box">
+          {historial.map((pais, index) => (
+            <div key={index} className="pais-item">
+              {pais}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
