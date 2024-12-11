@@ -53,9 +53,6 @@ const App = () => {
       
       <div className="barra-container">
         <Barra terminoBusqueda={terminoBusqueda} setTerminoBusqueda={setTerminoBusqueda} />
-        <button onClick={agregarAlHistorial} className="boton-historial">
-          Guardar en Historial
-        </button>
       </div>
 
       
